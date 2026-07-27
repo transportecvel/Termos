@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central de Termos - Movistar Logística</title>
+    <!-- Vinculação do CSS externo -->
+    <link rel="stylesheet" href="./Style.css">
+</head>
+<body>
+
+    <!-- CARROSSEL DE PAISAGENS NATURAIS E RODOVIÁRIAS -->
+    <div class="bg-carousel">
+        <!-- 1. Estrada no Pôr do Sol entre Vales -->
+        <div class="bg-slide active" style="background-image: url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?q=80&w=1600&auto=format&fit=crop');"></div>
+        <!-- 2. Rodovia Cortando Montanhas e Florestas -->
+        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1600&auto=format&fit=crop');"></div>
+        <!-- 3. Estrada Sinuosa entre o Litoral e Montanhas -->
+        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1600&auto=format&fit=crop');"></div>
+        <!-- 4. Ponte e Rodovia ao Amanhecer -->
+        <div class="bg-slide" style="background-image: url('https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=1600&auto=format&fit=crop');"></div>
+    </div>
+    <div class="bg-overlay"></div>
+
+    <!-- PAINEL DO FORMULÁRIO -->
+    <div class="app-card">
+        <div>
+            <div class="app-header">
+                <img src="./img/LOGO MOVISTAR.png" alt="Movistar Logística" class="logo-img">
+                <h1>Emissor de Termos Operacionais</h1>
+            </div>
+
+            <div class="term-selector">
+                <button class="btn-tab active" id="tabMulta" onclick="alternarTermo('MULTA')">🚨 Desconto de Multa</button>
+                <button class="btn-tab" id="tabKit" onclick="alternarTermo('KIT')">📦 Kit de Trabalho</button>
+            </div>
+
+            <!-- FORMULÁRIO TERMO 1: MULTA -->
+            <div id="formMulta">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Nome do Empregado / Motorista</label>
+                        <input type="text" id="inputNomeMulta" placeholder="Ex: João da Silva">
+                    </div>
+                    <div class="form-group">
+                        <label>CPF</label>
+                        <input type="text" id="inputCpfMulta" placeholder="000.000.000-00">
+                    </div>
+                    <div class="form-group">
+                        <label>Auto de Infração</label>
+                        <input type="text" id="inputAutoMulta" placeholder="Ex: E02548963">
+                    </div>
+                    <div class="form-group">
+                        <label>Data da Infração</label>
+                        <input type="date" id="inputDataInfracao">
+                    </div>
+                    <div class="form-group">
+                        <label>Valor Total da Multa (R$)</label>
+                        <input type="number" id="inputValorMulta" placeholder="880.41" step="0.01">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Quantidade de Parcelas</label>
+                        <input type="number" id="inputParcelas" value="3" min="1" max="12">
+                    </div>
+                </div>
+            </div>
+
+            <!-- FORMULÁRIO TERMO 2: KIT DE TRABALHO -->
+            <div id="formKit" style="display: none;">
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Nome do Funcionário</label>
+                        <input type="text" id="inputNomeKit" placeholder="Ex: Pedro Henrique">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Função</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="funcaoKit" value="MOTORISTA"> Motorista</label>
+                            <label><input type="radio" name="funcaoKit" value="AJUDANTE" checked> Ajudante</label>
+                        </div>
+                    </div>
+                    <div class="form-group"><label>Qtd. Caneta</label><input type="number" id="qtdCaneta" min="0" placeholder="0"></div>
+                    <div class="form-group"><label>Qtd. Grampo</label><input type="number" id="qtdGrampo" min="0" placeholder="0"></div>
+                    <div class="form-group"><label>Qtd. Grampeador</label><input type="number" id="qtdGrampeador" min="0" placeholder="0"></div>
+                    <div class="form-group"><label>Qtd. Prancheta</label><input type="number" id="qtdPrancheta" min="0" placeholder="0"></div>
+                    <div class="form-group"><label>Qtd. Fita</label><input type="number" id="qtdFita" min="0" placeholder="0"></div>
+                    <div class="form-group"><label>Qtd. Colchão</label><input type="number" id="qtdColchao" min="0" placeholder="0"></div>
+                    <div class="form-group"><label>Qtd. Carrinho</label><input type="number" id="qtdCarrinho" min="0" placeholder="0"></div>
+                    <div class="form-group"><label>Item Extra (Nome)</label><input type="text" id="itemExtraNome" placeholder="Ex: Cadeado"></div>
+                    <div class="form-group full-width"><label>Qtd. Item Extra</label><input type="number" id="itemExtraQtd" min="0" placeholder="0"></div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn-imprimir" onclick="prepararEImprimir()">🖨️ Gerar e Imprimir Termo</button>
+    </div>
+
+    <!-- MODELO IMPRESSÃO 1: MULTA -->
+    <div class="print-only" id="docMultaPrint">
+        <div class="header-doc">
+            <img src="./img/LOGO MOVISTAR.png" alt="Movistar Logística" class="logo-doc">
+            <h1>Termo de Autorização de Desconto em Folha de Pagamento</h1>
+        </div>
+
+        <div class="info-card">
+            <div><strong>EMPREGADOR:</strong> MOVISTAR OPERAÇÕES LOGÍSTICA LTDA</div>
+            <div><strong>EMPREGADO:</strong> <span id="pNomeMulta"></span></div>
+            <div><strong>CPF:</strong> <span id="pCpfMulta"></span></div>
+        </div>
+
+        <p style="text-align: justify; margin-bottom: 15px;">
+            Pelo presente instrumento, eu, na condição de empregado(a) da empresa <strong>MOVISTAR OPERAÇÕES LOGÍSTICA LTDA</strong>, autorizo de livre e espontânea vontade, em conformidade com o <strong>Art. 462, §1º da CLT</strong>, o desconto em minha folha de pagamento referente ao ressarcimento de multa de trânsito cometida na condução de veículo da frota da empresa.
+        </p>
+
+        <div class="destaque-financeiro">
+            <div style="margin-bottom: 6px;"><strong>Auto de Infração:</strong> <span id="pAutoMulta"></span></div>
+            <div style="margin-bottom: 6px;"><strong>Data da Infração:</strong> <span id="pDataInfracao"></span></div>
+            <div style="margin-bottom: 6px;"><strong>Valor Total da Multa:</strong> R$ <span id="pValorTotal"></span> <em id="pValorExtenso" style="color: #475569;"></em></div>
+            <div style="margin-bottom: 6px;"><strong>Forma de Desconto:</strong> Parcelado em <strong id="pQtdParcelas"></strong> parcela(s) de <strong>R$ <span id="pValorParcela"></span></strong>.</div>
+            
+            <div style="margin-top: 12px; font-weight: 700; color: #334155; text-transform: uppercase; font-size: 11px;">Cronograma de Desconto Previsto:</div>
+            <table class="tabela-parcelas">
+                <thead>
+                    <tr><th>Parcela</th><th>Mês / Ano</th><th>Valor</th></tr>
+                </thead>
+                <tbody id="pTabelaCorpoMulta"></tbody>
+            </table>
+        </div>
+
+        <p style="text-align: justify; margin-bottom: 15px;">
+            Caso ocorra a rescisão do meu contrato de trabalho antes do término do pagamento de todas as parcelas, autorizo desde já o desconto do saldo devedor remanescente diretamente nas minhas verbas rescisórias.
+        </p>
+
+        <div class="data-local">Cascavel - PR, <span class="dataHojeSpan"></span>.</div>
+
+        <div class="signatures">
+            <div class="line"></div>
+            <strong>Assinatura do Motorista</strong>
+        </div>
+    </div>
+
+    <!-- MODELO IMPRESSÃO 2: KIT DE TRABALHO -->
+    <div class="print-only" id="docKitPrint">
+        <div class="header-doc">
+            <img src="./img/LOGO MOVISTAR.png" alt="Movistar Logística" class="logo-doc">
+            <h1>Termo de Recebimento Kit de Trabalho</h1>
+        </div>
+
+        <p style="text-align: justify; margin-bottom: 15px;">
+            Declaro ter recebido da <strong>Movistar Operações de Logística</strong>, para uso exclusivo em serviço, os materiais abaixo relacionados, os quais usarei para a finalidade a que se destinam.
+        </p>
+        <p style="text-align: justify; margin-bottom: 15px;">
+            Comprometo-me a ressarcir a empresa, <strong>Movistar Operações de Logística</strong>, nos casos de extravio, má conservação ou não devolução dos mesmos por ocasião da saída da empresa, autorizando a proceder os descontos que se façam devidos do meu salário.
+        </p>
+        <p style="text-align: justify; margin-bottom: 15px;">
+            Para maior clareza, firmo o presente que será assinado por mim, toda vez em que for receber/devolver os itens abaixo relacionados para o Setor de Transporte.
+        </p>
+
+        <div style="margin: 20px 0; font-size: 14px;">
+            <div style="margin-bottom: 8px;"><strong>Funcionário:</strong> <span id="pNomeKit"></span></div>
+            <div><strong>Função:</strong> <span id="pFuncaoKit"></span></div>
+        </div>
+
+        <table class="tabela-kit">
+            <thead>
+                <tr><th>Descrição do Material</th><th style="text-align: center; width: 140px;">Quantidade</th></tr>
+            </thead>
+            <tbody id="pTabelaCorpoKit"></tbody>
+        </table>
+
+        <div class="data-local">Cascavel - PR, <span class="dataHojeSpan"></span>.</div>
+
+        <div class="signatures">
+            <div class="line"></div>
+            <strong>FUNCIONÁRIO</strong>
+        </div>
+    </div>
+
+    <!-- Vinculação do JavaScript externo -->
+    <script src="./Script.js"></script>
+</body>
+</html>
